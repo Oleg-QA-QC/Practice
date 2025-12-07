@@ -1,3 +1,5 @@
+import actions from "./actions.page.js";
+
 class TextBox {
   get userName() {
     return $("#userName");
@@ -26,9 +28,8 @@ class TextBox {
     await this.permanentAddress.setValue(permanentAddress);
   }
 
-  async clickSubmit() {
-    await this.submitButton.scrollIntoView();
-    await this.submitButton.click();
+  async clickOnSubmit() {
+    await actions.clickOnElement(this.submitButton);
   }
 }
 
