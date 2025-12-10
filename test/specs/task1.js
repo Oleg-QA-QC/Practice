@@ -66,15 +66,6 @@ describe("The practice task 1", () => {
 
     await webTables.clickOnSubmitButton();
 
-    // await webTables.getUserRowByEmail(email).then(async (row) => {
-    //   const rowText = await row.getText();
-    //   expect(rowText).toContain(name);
-    //   expect(rowText).toContain(lastName);
-    //   expect(rowText).toContain(email);
-    //   expect(rowText).toContain(age);
-    //   expect(rowText).toContain(salary);
-    //   expect(rowText).toContain(department);
-    // });
     const row = await webTables.getUserRowByEmail(email);
     const rowText = await row.getText();
     expect(rowText).toContain(name);
@@ -87,5 +78,41 @@ describe("The practice task 1", () => {
     const removedUser = await webTables.removeUserByEmail(email);
 
     expect(await removedUser).toBe(false);
+  });
+
+  // The new tests below demonstrate different approache to get and validate multiple fields
+  it("Input text - with map() and validation", async () => {
+    await browser.url("https://demoqa.com/text-box");
+
+    await textBox.inputText(name, email, currentAddress, permanentAddress);
+
+    await textBox.clickOnSubmit();
+
+    // Array of objects with selectors and expected values
+    const validations = [
+      { selector: "#name", expected: `Name:${name}` },
+      { selector: "#email", expected: `Email:${email}` },
+      {
+        selector: "p#currentAddress",
+        expected: `Current Address :${currentAddress}`,
+      },
+      {
+        selector: "p#permanentAddress",
+        expected: `Permananet Address :${permanentAddress}`,
+      },
+    ];
+
+    // The method map() to validate all fields
+    const results = await Promise.all(
+      validations.map(async ({ selector, expected }) => {
+        const actual = await $(selector).getText();
+        return { selector, actual, expected, isValid: actual === expected };
+      })
+    );
+
+    // Check all results
+    results.forEach(({ actual, expected }) => {
+      expect(actual).toBe(expected);
+    });
   });
 });
