@@ -11,7 +11,7 @@ class Elements {
     );
   }
 
-  async clickOnRequiredCheckBox(checkBoxTitle) {
+  async clickOnLeftMenuItem(checkBoxTitle) {
    const checkBox = await $(
      `//span[text()='${checkBoxTitle}']//ancestor::li`
    );

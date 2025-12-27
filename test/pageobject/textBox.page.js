@@ -21,11 +21,36 @@ class TextBox {
     return $("#submit");
   }
 
+  get outputName() {
+    return $("#name");
+  }
+
+  get outputEmail() {
+    return $("#email");
+  }
+
+  get outputCurrentAddress() {
+    return $("p#currentAddress");
+  }
+  
+  get outputPermanentAddress() {
+    return $("p#permanentAddress");
+  }
+
   async inputText(name, email, currentAddress, permanentAddress) {
     await this.userName.setValue(name);
     await this.email.setValue(email);
     await this.currentAddress.setValue(currentAddress);
     await this.permanentAddress.setValue(permanentAddress);
+  }
+
+  async getOutputValues() {
+    return {
+      name: await this.outputName.getText(),
+      email: await this.outputEmail.getText(),
+      currentAddress: await this.outputCurrentAddress.getText(),
+      permanentAddress: await this.outputPermanentAddress.getText(),
+    };
   }
 
   async clickOnSubmit() {

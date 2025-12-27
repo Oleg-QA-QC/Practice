@@ -1,6 +1,6 @@
 import "dotenv/config";
 import textBox from "../pageobject/textBox.page";
-import elements from "../pageobject/elemets.page.js";
+import elements from "../pageobject/elements.page.js";
 import webTables from "../pageobject/webTables.page.js";
 
 const name = process.env.NAME;
@@ -13,28 +13,25 @@ const currentAddress = process.env.CURRENT_ADDRESS;
 const permanentAddress = process.env.PERMANENT_ADDRESS;
 
 describe("The practice task 1", () => {
-  it("Input text", async () => {
+  it("should submit text box form and display correct output", async () => {
     await browser.url("https://demoqa.com/text-box");
 
     await textBox.inputText(name, email, currentAddress, permanentAddress);
 
     await textBox.clickOnSubmit();
 
-    const outputName = await $("#name").getText();
-    const outputEmail = await $("#email").getText();
-    const outputCurrentAddress = await $("p#currentAddress").getText();
-    const outputPermanentAddress = await $("p#permanentAddress").getText();
+    const output = await textBox.getOutputValues();
 
-    expect(outputName).toBe(`Name:${name}`);
-    expect(outputEmail).toBe(`Email:${email}`);
-    expect(outputCurrentAddress).toBe(`Current Address :${currentAddress}`);
-    expect(outputPermanentAddress).toBe(
+    expect(output.name).toBe(`Name:${name}`);
+    expect(output.email).toBe(`Email:${email}`);
+    expect(output.currentAddress).toBe(`Current Address :${currentAddress}`);
+    expect(output.permanentAddress).toBe(
       `Permananet Address :${permanentAddress}`
     );
   });
 
-  it("CheckBox Task", async () => {
-    await elements.clickOnRequiredCheckBox("Check Box");
+  it("should select 'Workspace' checkbox and verify state", async () => {
+    await elements.clickOnLeftMenuItem("Check Box");
 
     await elements.clickOnCollapseButton();
 
@@ -50,8 +47,8 @@ describe("The practice task 1", () => {
     );
   });
 
-  it("WebTables task", async () => {
-    await elements.clickOnRequiredCheckBox("Web Tables");
+  it("should add and remove user in web table", async () => {
+    await elements.clickOnLeftMenuItem("Web Tables");
 
     await webTables.clickOnAddButton();
 
@@ -77,7 +74,7 @@ describe("The practice task 1", () => {
 
     const removedUser = await webTables.removeUserByEmail(email);
 
-    expect(await removedUser).toBe(false);
+    expect(removedUser).toBe(false);
   });
 
   // The new tests below demonstrate different approache to get and validate multiple fields
